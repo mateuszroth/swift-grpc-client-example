@@ -1,0 +1,162 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+option csharp_namespace = "ServiceTitan.Grpc.Sync";
+option java_package = "com.servicetitan.grpc.sync";
+package sync;
+
+message ClientMessage {
+
+  // Wipes server-side cache and re-syncs the data.
+  // Passing an empty map in the localTimestamps field effectively makes the server re-send the entire state.
+  message ResetRequest {
+    message EntityMetadata {
+      map<int64, google.protobuf.Timestamp> counter = 1;
+    }
+
+    // IDs of all unsynced actions
+    repeated string localActionIds = 1;
+
+    // metadata (type + id + timestamp) of every entity that the mobile app knows about
+    EntityMetadata metadata = 2;
+  }
+
+  // a lightweight way to resume a connection if the backend still keeps its state in the cache.
+  message ResumeRequest {
+    string lastProcessedEntityUpdateBatchId = 1; // last entity update batch processed by the client.
+  }
+
+  message ActionRequest {
+    message IncrementCounter {
+      int64 id = 1;
+    }
+
+    message DecrementCounter {
+      int64 id = 1;
+    }
+
+    message SetCounterValue {
+      int64 id = 1;
+      int64 value = 2;
+    }
+
+    message CreateCounter {
+      int64 clientSideId = 1;
+      string name = 2;
+      int64 initialValue = 3;
+    }
+
+    message DeleteCounter {
+      int64 id = 1;
+    }
+
+    message RenameCounter {
+      int64 id = 1;
+      string newName = 2;
+    }
+
+    string actionId = 1;
+
+    oneof content {
+      CreateCounter create = 3;
+      DeleteCounter delete = 4;
+      IncrementCounter increment = 5;
+      DecrementCounter decrement = 6;
+      SetCounterValue setValue = 7;
+      RenameCounter rename = 8;
+    }
+  }
+
+  message EntityUpdateAcknowledgement {
+    string batchId = 1;
+  }
+
+  // -----------------------------
+  oneof content {
+    ResetRequest resetRequest = 1;
+    ResumeRequest resumeRequest = 2;
+    ActionRequest actionRequest = 3;
+    EntityUpdateAcknowledgement entityUpdateAcknowledgement = 4;
+  }
+}
+
+
+
+message ServerMessage {
+  message EntityBody {
+    message Counter {
+      string name = 1;
+      int64 value = 2;
+    }
+
+    oneof content {
+      EntityBody.Counter counter = 1;
+    }
+  }
+
+  message EntityEvent {
+    message Create {
+      int64 clientSideId = 1;
+      EntityBody body = 2;
+    }
+
+    message Update {
+      EntityBody body = 1;
+    }
+
+    message Delete {
+
+    }
+
+    int64 id = 1;
+    google.protobuf.Timestamp timestamp = 2;
+    oneof content {
+      Create create = 3;
+      Update update = 4;
+      Delete delete = 5;
+    }
+  }
+
+  message EntityUpdateBatch {
+    string batchId = 1;
+    repeated EntityEvent entityUpdates = 2;
+  }
+
+  /////
+
+  message ServerHello {
+    bool canResume = 1;
+  }
+
+  message ResetResponse {
+    repeated string confirmedActionIds = 1;
+    EntityUpdateBatch entityUpdates = 2;
+  }
+
+  message ResumeResponse {
+    bool success = 1;
+    string lastConfirmedActionId = 2;
+    EntityUpdateBatch entityUpdates = 3;
+  }
+
+  message ActionResponse {
+    string actionId = 1;
+    bool success = 2;
+    EntityUpdateBatch entityUpdates = 3;
+  }
+
+  message EntityUpdateNotification {
+    EntityUpdateBatch entityUpdates = 1;
+  }
+
+  oneof content {
+    ServerHello serverHello = 1;
+    ResetResponse resetResponse = 2;
+    ResumeResponse resumeResponse = 3;
+    ActionResponse actionResponse = 4;
+    EntityUpdateNotification entityUpdateNotification = 5;
+  }
+}
+
+service SyncService {
+  rpc Synchronize (stream ClientMessage) returns (stream ServerMessage);
+}

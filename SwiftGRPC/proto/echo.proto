@@ -1,0 +1,13 @@
+syntax = "proto3";
+option csharp_namespace = "ServiceTitan.Grpc.Echo";
+option java_package = "com.servicetitan.grpc.echo";
+package echo;
+
+message EchoMessage {
+  string content = 1;
+}
+
+service EchoService {
+  rpc Echo (EchoMessage) returns (EchoMessage);
+  rpc EchoStream (stream EchoMessage) returns (stream EchoMessage);
+}

@@ -13,7 +13,7 @@ struct AppNavigationView: View {
                         Text("Echo")
                     }
                 
-                SyncView(store: store)
+                SyncView(store: store.scope(state: { $0.sync }, action: AppAction.sync))
                     .tabItem {
                         Image(systemName: "arrow.clockwise.icloud")
                         Text("Sync")

@@ -1,88 +1,87 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct Counter: Identifiable {
-    var id: String
-    var name: String
-    var value: Int
-}
-
-struct CounterRow: View {
-    let counter: Counter
+struct AddNewCounterView: View {
+    let store: Store<SyncState, SyncAction>
+    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
-        HStack {
-            Image(systemName: "delete.right")
-                .padding()
-            Text(counter.name)
-            Spacer()
-            Group {
-                Text("\(counter.value)")
-                    .fontWeight(.bold)
-                Image(systemName: "plus.circle")
-                    .padding()
-                Image(systemName: "minus.circle")
+        Form {
+            WithViewStore(self.store) { viewStore in
+                Group {
+                    Button(action: {
+                        viewStore.send(SyncAction.resetNew)
+                    }, label: {
+                        Text("Clear")
+                    })
+                    Section {
+                        TextField("Counter name", text: viewStore.binding(
+                                    get: { $0.newName }, send: SyncAction.updateName))
+                        Stepper(
+                            value: viewStore.binding(
+                                get: { $0.newValue }, send: SyncAction.updateValue),
+                            in: -10...10,
+                            step: 1
+                        ) {
+                            Text("Current: \(viewStore.newValue)")
+                        }
+                    }
+                    Button(action: {
+                        viewStore.send(SyncAction.saveNew)
+                        presentationMode.wrappedValue.dismiss()
+                    }, label: {
+                        Text("Save")
+                    })
+                }
             }
         }
-        .padding()
+            .navigationTitle("Add a new counter")
+            .navigationBarTitleDisplayMode(.inline) // or .large
     }
 }
 
 struct SyncView: View {
-    let store: Store<AppState, AppAction>
+    let store: Store<SyncState, SyncAction>
     @State var isModal: Bool = false
     @State var name = ""
-    @State var value = 0
-    @State var counters: [Counter] = [
-        Counter(id: "-1", name: "Local", value: 10),
-        Counter(id: UUID().uuidString, name: "Server", value: 5)
-    ]
-
-    var modal: some View {
-        WithViewStore(self.store) { viewStore in
-            Form {
-                Section {
-                    Text("Add a new counter").font(.headline)
-                    TextField("Counter name", text: $name)
-                    Stepper(value: $value, in: 0...10, label: { Text("Value") })
-                    Text("Current value: \(value)")
-                    Button("Save") {}
-                }
-            }
-        }
-    }
     
     var body: some View {
         WithViewStore(self.store) { viewStore in
-            NavigationView {
-                Group {
-                    List {
-                        ForEach(counters, id: \.id) { counter in
-                            CounterRow(counter: counter)
+            return NavigationView {
+                List {
+                    ForEach(viewStore.counters) { counter in
+                        HStack {
+                            Text("\(counter.name): ")
+                            Stepper(
+                                onIncrement: { viewStore.send(.increment(counter))
+                                },
+                                onDecrement: {
+                                    viewStore.send(.decrement(counter))
+                                }
+                            ) {
+                                Text("\(counter.value)")
+                                    .fontWeight(.bold)
+                            }
+                        }
+                        .padding()
+                    }
+                    .onDelete { index in
+                        guard let ind = index.first else {
+                            return
+                        }
+                        viewStore.send(.deleteCounter(ind))
+                    }
+                }
+                .toolbar {
+                    ToolbarItem(placement: .primaryAction) {
+                        // there might be a bug within NavigationLink https://stackoverflow.com/questions/57946197/navigationlink-on-swiftui-pushes-view-twice
+                        NavigationLink(destination: AddNewCounterView(store: store), isActive: $isModal) {
+                                Image(systemName: "plus")
                         }
                     }
-                        .toolbar {
-                            ToolbarItem(placement: .primaryAction) {
-                                Button {
-                                    self.isModal = true
-                                } label: {
-                                    Image(systemName: "plus")
-                                }.sheet(isPresented: $isModal, content: {
-                                    self.modal
-                                })
-                            }
-
-                            ToolbarItem(placement: .navigationBarTrailing) {
-                                Button {
-                                    self.isModal = true
-                                } label: {
-                                    Image(systemName: "plus")
-                                }.sheet(isPresented: $isModal, content: {
-                                    self.modal
-                                })
-                            }
-                        }
                 }
+            }.onAppear {
+                viewStore.send(.resetState)
             }
         }
     }
@@ -90,6 +89,9 @@ struct SyncView: View {
 
 struct SyncView_Previews: PreviewProvider {
     static var previews: some View {
-        SyncView(store: StoreContainer.appStore)
+        SyncView(store: StoreContainer.appStore.scope(
+            state: { $0.sync },
+            action: AppAction.sync
+        ))
     }
 }

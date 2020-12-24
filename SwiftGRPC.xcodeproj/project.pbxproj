@@ -30,6 +30,8 @@
 		9997ABF6259217AF005C9ECB /* echo.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9997ABED259217AF005C9ECB /* echo.pb.swift */; };
 		9997ABFC25921F52005C9ECB /* AppCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9997ABFB25921F52005C9ECB /* AppCore.swift */; };
 		9997AC0025921FE3005C9ECB /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 9997ABFF25921FE3005C9ECB /* ComposableArchitecture */; };
+		99BAD0432594A5680023FDE6 /* SyncCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BAD0422594A5680023FDE6 /* SyncCore.swift */; };
+		99BAD0462594D49C0023FDE6 /* SyncClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BAD0452594D49C0023FDE6 /* SyncClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +55,8 @@
 		9997ABEA259217AF005C9ECB /* search.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.protobuf; path = search.proto; sourceTree = "<group>"; };
 		9997ABED259217AF005C9ECB /* echo.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = echo.pb.swift; sourceTree = "<group>"; };
 		9997ABFB25921F52005C9ECB /* AppCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCore.swift; sourceTree = "<group>"; };
+		99BAD0422594A5680023FDE6 /* SyncCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncCore.swift; sourceTree = "<group>"; };
+		99BAD0452594D49C0023FDE6 /* SyncClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +137,7 @@
 			isa = PBXGroup;
 			children = (
 				9997ABDB259213E7005C9ECB /* EchoClient.swift */,
+				99BAD0452594D49C0023FDE6 /* SyncClient.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -157,6 +162,7 @@
 			isa = PBXGroup;
 			children = (
 				9997ABFB25921F52005C9ECB /* AppCore.swift */,
+				99BAD0422594A5680023FDE6 /* SyncCore.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -258,6 +264,8 @@
 				99101DF22593583A009D1195 /* sync.proto in Sources */,
 				9997ABFC25921F52005C9ECB /* AppCore.swift in Sources */,
 				9997ABB92591E375005C9ECB /* SwiftGRPCApp.swift in Sources */,
+				99BAD0432594A5680023FDE6 /* SyncCore.swift in Sources */,
+				99BAD0462594D49C0023FDE6 /* SyncClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

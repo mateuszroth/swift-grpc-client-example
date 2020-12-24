@@ -7,6 +7,7 @@ struct AppState: Equatable {
     var receivedMessage: String = ""
     var isLoading: Bool = false
     var isStreaming: Bool = false
+    var sync: SyncState
 }
 
 enum AppAction {
@@ -15,14 +16,25 @@ enum AppAction {
     case echoResult(Result<String, Error>)
     case toggleIsStreaming
     case echoStreamResult(Result<String, Error>)
+    case sync(action: SyncAction)
 }
 
 struct AppEnvironment {
     let mainQueue: AnySchedulerOf<DispatchQueue>
     let echoClient: EchoClient
+    let syncClient: SyncClient
 }
 
 let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
+    syncReducer.pullback(
+        state: \AppState.sync,
+        action: /AppAction.sync,
+        environment: {
+            SyncEnvironment(
+                mainQueue: $0.mainQueue,
+                syncClient: $0.syncClient
+            )}
+    ),
     Reducer<AppState, AppAction, AppEnvironment> { state, action, environment in
         switch action {
         case let .messageChanged(message):
@@ -62,6 +74,8 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
         case .toggleIsStreaming:
             state.isStreaming = !state.isStreaming
             return .none
+        default:
+            return .none
         }
     }
 )
@@ -69,6 +83,7 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
 extension AppEnvironment {
     static let live = Self(
         mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
-        echoClient: EchoClient.live(host: "0.0.0.0", port: 5005)
+        echoClient: EchoClient.live(host: "0.0.0.0", port: 5005),
+        syncClient: SyncClient.live(host: "0.0.0.0", port: 5005)
     )
 }

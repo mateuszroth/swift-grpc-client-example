@@ -13,6 +13,8 @@
 		99101DF6259358BD009D1195 /* AppNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99101DF5259358BD009D1195 /* AppNavigationView.swift */; };
 		99101DFA25935B7B009D1195 /* SyncView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99101DF925935B7B009D1195 /* SyncView.swift */; };
 		99101DFF25935CA9009D1195 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 99101DFE25935CA9009D1195 /* README.md */; };
+		9925969625B0649300AED9FC /* Array+subscriptIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9925969525B0649300AED9FC /* Array+subscriptIdentifiable.swift */; };
+		9925969B25B1D8F600AED9FC /* Date+millisecondsSince1970.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9925969A25B1D8F600AED9FC /* Date+millisecondsSince1970.swift */; };
 		9997ABB92591E375005C9ECB /* SwiftGRPCApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9997ABB82591E375005C9ECB /* SwiftGRPCApp.swift */; };
 		9997ABBB2591E375005C9ECB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9997ABBA2591E375005C9ECB /* ContentView.swift */; };
 		9997ABBD2591E377005C9ECB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9997ABBC2591E377005C9ECB /* Assets.xcassets */; };
@@ -41,6 +43,8 @@
 		99101DF5259358BD009D1195 /* AppNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNavigationView.swift; sourceTree = "<group>"; };
 		99101DF925935B7B009D1195 /* SyncView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncView.swift; sourceTree = "<group>"; };
 		99101DFE25935CA9009D1195 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		9925969525B0649300AED9FC /* Array+subscriptIdentifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+subscriptIdentifiable.swift"; sourceTree = "<group>"; };
+		9925969A25B1D8F600AED9FC /* Date+millisecondsSince1970.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+millisecondsSince1970.swift"; sourceTree = "<group>"; };
 		9997ABB52591E375005C9ECB /* SwiftGRPC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftGRPC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9997ABB82591E375005C9ECB /* SwiftGRPCApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftGRPCApp.swift; sourceTree = "<group>"; };
 		9997ABBA2591E375005C9ECB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -85,6 +89,15 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		9925969425B0648900AED9FC /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				9925969525B0649300AED9FC /* Array+subscriptIdentifiable.swift */,
+				9925969A25B1D8F600AED9FC /* Date+millisecondsSince1970.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		9997ABAC2591E375005C9ECB = {
 			isa = PBXGroup;
 			children = (
@@ -106,6 +119,7 @@
 		9997ABB72591E375005C9ECB /* SwiftGRPC */ = {
 			isa = PBXGroup;
 			children = (
+				9925969425B0648900AED9FC /* Extensions */,
 				9997ABE4259217AF005C9ECB /* proto */,
 				9997ABFA25921F44005C9ECB /* Core */,
 				9997ABDA259213DC005C9ECB /* Services */,
@@ -253,6 +267,7 @@
 				99101DF6259358BD009D1195 /* AppNavigationView.swift in Sources */,
 				99101DF32593583A009D1195 /* sync.grpc.swift in Sources */,
 				9997ABF0259217AF005C9ECB /* search.grpc.swift in Sources */,
+				9925969B25B1D8F600AED9FC /* Date+millisecondsSince1970.swift in Sources */,
 				9997ABEE259217AF005C9ECB /* search.pb.swift in Sources */,
 				9997ABF1259217AF005C9ECB /* echo.grpc.swift in Sources */,
 				9997ABF2259217AF005C9ECB /* echo.proto in Sources */,
@@ -264,6 +279,7 @@
 				99101DF22593583A009D1195 /* sync.proto in Sources */,
 				9997ABFC25921F52005C9ECB /* AppCore.swift in Sources */,
 				9997ABB92591E375005C9ECB /* SwiftGRPCApp.swift in Sources */,
+				9925969625B0649300AED9FC /* Array+subscriptIdentifiable.swift in Sources */,
 				99BAD0432594A5680023FDE6 /* SyncCore.swift in Sources */,
 				99BAD0462594D49C0023FDE6 /* SyncClient.swift in Sources */,
 			);

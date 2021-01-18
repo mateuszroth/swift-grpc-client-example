@@ -3,32 +3,32 @@ import ComposableArchitecture
 import Combine
 
 struct Counter: Identifiable, Equatable {
-    var id: String
+    var id: Int64
+    var clientSideId: Int64
     var name: String
-    var value: Int
+    var value: Int64
 }
 
 struct SyncState: Equatable {
-    var counters: [Counter] = [
-        Counter(id: "-1", name: "Local", value: 10),
-        Counter(id: UUID().uuidString, name: "Server", value: 5)
-    ]
+    var counters: [Counter] = []
     var newName = ""
-    var newValue = 0
+    var newValue: Int64 = 0
     var syncError: String?
+    var showCreateForm = false
 }
 
 enum SyncAction {
     case resetState
-    case syncResult(Result<Sync_ServerMessage.OneOf_Content?, Error>)
+    case syncResult(Result<SyncResponse, Error>)
     case updateName(String)
-    case updateValue(Int)
+    case updateValue(Int64)
     case saveNew
     case resetNew
     case deleteCounter(Int)
     case increment(Counter)
     case decrement(Counter)
-    case changeValue(Counter, Int)
+    case changeValue(Counter, Int64)
+    case changeShowCreateForm(Bool)
 }
 
 struct SyncEnvironment {
@@ -44,6 +44,7 @@ let syncReducer = Reducer<SyncState, SyncAction, SyncEnvironment> { state, actio
                 .receive(on: environment.mainQueue)
                 .catchToEffect()
                 .map(SyncAction.syncResult)
+
         case let .syncResult(.success(serverResponse)):
             switch serverResponse {
             case let .resetResponse(response):
@@ -53,15 +54,70 @@ let syncReducer = Reducer<SyncState, SyncAction, SyncEnvironment> { state, actio
                         return
                     }
                     counters.append(Counter(
-                        id: String(entityUpdate.create.clientSideID),
+                        id: entityUpdate.id,
+                        clientSideId: entityUpdate.create.clientSideID,
                         name: entityUpdate.create.body.counter.name,
-                        value: Int(entityUpdate.create.body.counter.value)
+                        value: Int64(entityUpdate.create.body.counter.value)
                     ))
                 }
                 state.counters = counters
                 return .none
+            
+            case let .entityUpdateNotification(response):
+                guard response.hasEntityUpdates else {
+                    return .none
+                }
                 
-            // TODO: more cases
+                response.entityUpdates.entityUpdates.forEach { entityUpdate in
+                    switch entityUpdate.content {
+                    case let .create(entity):
+                        state.counters.append(Counter(
+                            id: entityUpdate.id,
+                            clientSideId: entity.clientSideID,
+                            name: entity.body.counter.name,
+                            value: entity.body.counter.value
+                        ))
+                    case let .delete(entity):
+                        state.counters = state.counters.filter { $0.id != entityUpdate.id }
+                        // TODO: looks everything is correct, but the server doesn't propagate the event to other "listeners" and doesn't actually delete the counter on the server side
+                    case let .update(entity):
+                        if let row = state.counters.firstIndex(where: { $0.id == entityUpdate.id }) {
+                            state.counters[row].value = entity.body.counter.value
+                            state.counters[row].name = entity.body.counter.name
+                        }
+                    case .none:
+                        break
+                    }
+                }
+                
+                return .none
+                
+            case let .actionResponse(response):
+                guard response.hasEntityUpdates else {
+                    return .none
+                }
+                
+                response.entityUpdates.entityUpdates.forEach { entityUpdate in
+                    switch entityUpdate.content {
+                    case let .create(entity):
+                        if let row = state.counters.firstIndex(where: { $0.clientSideId == entity.clientSideID }) {
+                            state.counters[row].id = entityUpdate.id
+                            state.counters[row].value = entity.body.counter.value
+                            state.counters[row].name = entity.body.counter.name
+                        }
+                    case let .delete(entity):
+                        state.counters = state.counters.filter { $0.id != entityUpdate.id }
+                        // TODO: seems the server is broken - on delete returns false, but afterwards if you try to increment/decrement the counter, you will get another false every time despite it worked before deleting
+                    case let .update(entity):
+                        if let row = state.counters.firstIndex(where: { $0.id == entityUpdate.id }) {
+                            state.counters[row].value = entity.body.counter.value
+                            state.counters[row].name = entity.body.counter.name
+                        }
+                    case .none:
+                        break
+                    }
+                }
+                return .none
                 
             default:
                 return .none
@@ -69,6 +125,7 @@ let syncReducer = Reducer<SyncState, SyncAction, SyncEnvironment> { state, actio
         case let .syncResult(.failure(error)):
             state.syncError = "ERROR: \(error)"
             return .none
+
         case let .updateName(name):
             state.newName = name
             return .none
@@ -76,22 +133,41 @@ let syncReducer = Reducer<SyncState, SyncAction, SyncEnvironment> { state, actio
             state.newValue = val
             return .none
         case .saveNew:
-            let counter = Counter(id: UUID().uuidString, name: state.newName, value: state.newValue)
+            let id = Date().millisecondsSince1970
+            let counter = Counter(id: -id, clientSideId: -id, name: state.newName, value: state.newValue)
             state.newName = ""
             state.newValue = 0
             state.counters.append(counter)
+            _ = environment.syncClient.createCounter(counter.id, counter.name, counter.value)
+                .receive(on: environment.mainQueue)
             return .none
         case .resetNew:
             state.newName = ""
             state.newValue = 0
             return .none
+
         case let .deleteCounter(index):
+            let counter = state.counters[index]
             state.counters.remove(at: index)
+            _ = environment.syncClient.removeCounter(counter.id)
+                .receive(on: environment.mainQueue)
             return .none
+
         case let .increment(counter):
-            return Effect(value: .changeValue(counter, 1))
+            if let row = state.counters.firstIndex(where: { $0.id == counter.id }) {
+                state.counters[row].value += 1
+            }
+            _ = environment.syncClient.incrementCounter(counter.id)
+                .receive(on: environment.mainQueue)
+            return .none
         case let .decrement(counter):
-            return Effect(value: .changeValue(counter, -1))
+            if let row = state.counters.firstIndex(where: { $0.id == counter.id }) {
+                state.counters[row].value -= 1
+            }
+            _ = environment.syncClient.decrementCounter(counter.id)
+                .receive(on: environment.mainQueue)
+            return .none
+
         case let .changeValue(counter, value):
             var updatedCounter = state.counters.first(where: { $0 == counter })
             updatedCounter?.value += value
@@ -100,6 +176,10 @@ let syncReducer = Reducer<SyncState, SyncAction, SyncEnvironment> { state, actio
                 return .none
             }
             state.counters[notNilIndex] = notNilUpdatedCounter
+            return .none
+            
+        case let .changeShowCreateForm(val):
+            state.showCreateForm = val
             return .none
         }
 }.debugActions()

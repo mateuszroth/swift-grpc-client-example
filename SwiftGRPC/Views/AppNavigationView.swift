@@ -19,6 +19,9 @@ struct AppNavigationView: View {
                         Text("Sync")
                     }
             }
+            .onAppear {
+                viewStore.send(.sync(action: .resetState))
+            }
         }
     }
 }

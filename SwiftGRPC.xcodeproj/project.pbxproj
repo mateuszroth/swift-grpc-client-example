@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9909874625BEEFF60084DCF1 /* counter.proto in Sources */ = {isa = PBXBuildFile; fileRef = 9909874125BEEFF60084DCF1 /* counter.proto */; };
+		9909874725BEEFF60084DCF1 /* protocol.proto in Sources */ = {isa = PBXBuildFile; fileRef = 9909874225BEEFF60084DCF1 /* protocol.proto */; };
+		9909874825BEEFF60084DCF1 /* counter.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9909874325BEEFF60084DCF1 /* counter.pb.swift */; };
+		9909874925BEEFF60084DCF1 /* protocol.grpc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9909874425BEEFF60084DCF1 /* protocol.grpc.swift */; };
+		9909874A25BEEFF60084DCF1 /* protocol.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9909874525BEEFF60084DCF1 /* protocol.pb.swift */; };
+		9909874D25BF1E920084DCF1 /* SyncV2Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9909874C25BF1E920084DCF1 /* SyncV2Client.swift */; };
 		99101DF12593583A009D1195 /* sync.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99101DEE2593583A009D1195 /* sync.pb.swift */; };
 		99101DF22593583A009D1195 /* sync.proto in Sources */ = {isa = PBXBuildFile; fileRef = 99101DEF2593583A009D1195 /* sync.proto */; };
 		99101DF32593583A009D1195 /* sync.grpc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99101DF02593583A009D1195 /* sync.grpc.swift */; };
@@ -34,9 +40,19 @@
 		9997AC0025921FE3005C9ECB /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 9997ABFF25921FE3005C9ECB /* ComposableArchitecture */; };
 		99BAD0432594A5680023FDE6 /* SyncCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BAD0422594A5680023FDE6 /* SyncCore.swift */; };
 		99BAD0462594D49C0023FDE6 /* SyncClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BAD0452594D49C0023FDE6 /* SyncClient.swift */; };
+		99FDB53625C0233100629F35 /* SyncV2Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99FDB53525C0233100629F35 /* SyncV2Core.swift */; };
+		99FDB53A25C02B2C00629F35 /* SyncV2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99FDB53925C02B2C00629F35 /* SyncV2View.swift */; };
+		99FDB53F25C05F8900629F35 /* CounterActionRequestsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99FDB53E25C05F8900629F35 /* CounterActionRequestsFactory.swift */; };
+		99FDB54725C1BBEF00629F35 /* CounterTypeIds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99FDB54625C1BBEF00629F35 /* CounterTypeIds.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9909874125BEEFF60084DCF1 /* counter.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.protobuf; path = counter.proto; sourceTree = "<group>"; };
+		9909874225BEEFF60084DCF1 /* protocol.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.protobuf; path = protocol.proto; sourceTree = "<group>"; };
+		9909874325BEEFF60084DCF1 /* counter.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = counter.pb.swift; sourceTree = "<group>"; };
+		9909874425BEEFF60084DCF1 /* protocol.grpc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = protocol.grpc.swift; sourceTree = "<group>"; };
+		9909874525BEEFF60084DCF1 /* protocol.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = protocol.pb.swift; sourceTree = "<group>"; };
+		9909874C25BF1E920084DCF1 /* SyncV2Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncV2Client.swift; sourceTree = "<group>"; };
 		99101DEE2593583A009D1195 /* sync.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = sync.pb.swift; sourceTree = "<group>"; };
 		99101DEF2593583A009D1195 /* sync.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.protobuf; path = sync.proto; sourceTree = "<group>"; };
 		99101DF02593583A009D1195 /* sync.grpc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = sync.grpc.swift; sourceTree = "<group>"; };
@@ -61,6 +77,10 @@
 		9997ABFB25921F52005C9ECB /* AppCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCore.swift; sourceTree = "<group>"; };
 		99BAD0422594A5680023FDE6 /* SyncCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncCore.swift; sourceTree = "<group>"; };
 		99BAD0452594D49C0023FDE6 /* SyncClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncClient.swift; sourceTree = "<group>"; };
+		99FDB53525C0233100629F35 /* SyncV2Core.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncV2Core.swift; sourceTree = "<group>"; };
+		99FDB53925C02B2C00629F35 /* SyncV2View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncV2View.swift; sourceTree = "<group>"; };
+		99FDB53E25C05F8900629F35 /* CounterActionRequestsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterActionRequestsFactory.swift; sourceTree = "<group>"; };
+		99FDB54625C1BBEF00629F35 /* CounterTypeIds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterTypeIds.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,12 +99,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9909874025BEEFF60084DCF1 /* v2 */ = {
+			isa = PBXGroup;
+			children = (
+				9909874125BEEFF60084DCF1 /* counter.proto */,
+				9909874225BEEFF60084DCF1 /* protocol.proto */,
+				9909874325BEEFF60084DCF1 /* counter.pb.swift */,
+				9909874425BEEFF60084DCF1 /* protocol.grpc.swift */,
+				9909874525BEEFF60084DCF1 /* protocol.pb.swift */,
+			);
+			path = v2;
+			sourceTree = "<group>";
+		};
 		99101DFC25935BFF009D1195 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				99101DF5259358BD009D1195 /* AppNavigationView.swift */,
 				9997ABBA2591E375005C9ECB /* ContentView.swift */,
 				99101DF925935B7B009D1195 /* SyncView.swift */,
+				99FDB53925C02B2C00629F35 /* SyncV2View.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -119,9 +152,10 @@
 		9997ABB72591E375005C9ECB /* SwiftGRPC */ = {
 			isa = PBXGroup;
 			children = (
-				9925969425B0648900AED9FC /* Extensions */,
 				9997ABE4259217AF005C9ECB /* proto */,
 				9997ABFA25921F44005C9ECB /* Core */,
+				9925969425B0648900AED9FC /* Extensions */,
+				99FDB54525C1BBE500629F35 /* Model */,
 				9997ABDA259213DC005C9ECB /* Services */,
 				99101DFC25935BFF009D1195 /* Views */,
 				9997ABB82591E375005C9ECB /* SwiftGRPCApp.swift */,
@@ -152,11 +186,32 @@
 			children = (
 				9997ABDB259213E7005C9ECB /* EchoClient.swift */,
 				99BAD0452594D49C0023FDE6 /* SyncClient.swift */,
+				9909874C25BF1E920084DCF1 /* SyncV2Client.swift */,
+				99FDB53E25C05F8900629F35 /* CounterActionRequestsFactory.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
 		};
 		9997ABE4259217AF005C9ECB /* proto */ = {
+			isa = PBXGroup;
+			children = (
+				99FDB53C25C0556400629F35 /* v1 */,
+				9909874025BEEFF60084DCF1 /* v2 */,
+			);
+			path = proto;
+			sourceTree = "<group>";
+		};
+		9997ABFA25921F44005C9ECB /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				9997ABFB25921F52005C9ECB /* AppCore.swift */,
+				99BAD0422594A5680023FDE6 /* SyncCore.swift */,
+				99FDB53525C0233100629F35 /* SyncV2Core.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		99FDB53C25C0556400629F35 /* v1 */ = {
 			isa = PBXGroup;
 			children = (
 				99101DF02593583A009D1195 /* sync.grpc.swift */,
@@ -169,16 +224,15 @@
 				9997ABEA259217AF005C9ECB /* search.proto */,
 				9997ABED259217AF005C9ECB /* echo.pb.swift */,
 			);
-			path = proto;
+			path = v1;
 			sourceTree = "<group>";
 		};
-		9997ABFA25921F44005C9ECB /* Core */ = {
+		99FDB54525C1BBE500629F35 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				9997ABFB25921F52005C9ECB /* AppCore.swift */,
-				99BAD0422594A5680023FDE6 /* SyncCore.swift */,
+				99FDB54625C1BBEF00629F35 /* CounterTypeIds.swift */,
 			);
-			path = Core;
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -266,21 +320,31 @@
 				99101DFA25935B7B009D1195 /* SyncView.swift in Sources */,
 				99101DF6259358BD009D1195 /* AppNavigationView.swift in Sources */,
 				99101DF32593583A009D1195 /* sync.grpc.swift in Sources */,
+				9909874725BEEFF60084DCF1 /* protocol.proto in Sources */,
+				9909874625BEEFF60084DCF1 /* counter.proto in Sources */,
+				99FDB53625C0233100629F35 /* SyncV2Core.swift in Sources */,
+				9909874D25BF1E920084DCF1 /* SyncV2Client.swift in Sources */,
 				9997ABF0259217AF005C9ECB /* search.grpc.swift in Sources */,
 				9925969B25B1D8F600AED9FC /* Date+millisecondsSince1970.swift in Sources */,
+				9909874825BEEFF60084DCF1 /* counter.pb.swift in Sources */,
 				9997ABEE259217AF005C9ECB /* search.pb.swift in Sources */,
 				9997ABF1259217AF005C9ECB /* echo.grpc.swift in Sources */,
 				9997ABF2259217AF005C9ECB /* echo.proto in Sources */,
 				9997ABDC259213E7005C9ECB /* EchoClient.swift in Sources */,
 				9997ABF3259217AF005C9ECB /* search.proto in Sources */,
+				99FDB54725C1BBEF00629F35 /* CounterTypeIds.swift in Sources */,
 				9997ABF6259217AF005C9ECB /* echo.pb.swift in Sources */,
 				9997ABBB2591E375005C9ECB /* ContentView.swift in Sources */,
+				99FDB53F25C05F8900629F35 /* CounterActionRequestsFactory.swift in Sources */,
+				99FDB53A25C02B2C00629F35 /* SyncV2View.swift in Sources */,
 				99101DF12593583A009D1195 /* sync.pb.swift in Sources */,
 				99101DF22593583A009D1195 /* sync.proto in Sources */,
 				9997ABFC25921F52005C9ECB /* AppCore.swift in Sources */,
+				9909874925BEEFF60084DCF1 /* protocol.grpc.swift in Sources */,
 				9997ABB92591E375005C9ECB /* SwiftGRPCApp.swift in Sources */,
 				9925969625B0649300AED9FC /* Array+subscriptIdentifiable.swift in Sources */,
 				99BAD0432594A5680023FDE6 /* SyncCore.swift in Sources */,
+				9909874A25BEEFF60084DCF1 /* protocol.pb.swift in Sources */,
 				99BAD0462594D49C0023FDE6 /* SyncClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

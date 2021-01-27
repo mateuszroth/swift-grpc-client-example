@@ -18,9 +18,15 @@ struct AppNavigationView: View {
                         Image(systemName: "arrow.clockwise.icloud")
                         Text("Sync")
                     }
+                
+                SyncV2View(store: store.scope(state: { $0.syncV2 }, action: AppAction.syncV2))
+                    .tabItem {
+                        Image(systemName: "arrow.clockwise.icloud")
+                        Text("Sync V2")
+                    }
             }
             .onAppear {
-                viewStore.send(.sync(action: .resetState))
+                viewStore.send(.syncV2(action: .resetState))
             }
         }
     }

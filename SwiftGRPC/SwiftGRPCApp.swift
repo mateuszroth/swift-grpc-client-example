@@ -3,7 +3,7 @@ import ComposableArchitecture
 
 struct StoreContainer {
     static let appStore: Store<AppState, AppAction> = Store(
-        initialState: AppState(sync: SyncState()),
+        initialState: AppState(sync: SyncState(), syncV2: SyncV2State()),
         reducer: appReducer,
         environment: AppEnvironment.live
     )

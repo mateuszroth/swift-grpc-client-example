@@ -60,7 +60,8 @@ let syncV2Reducer = Reducer<SyncV2State, SyncV2Action, SyncV2Environment> { stat
                     }
                 }
                 state.counters = counters
-                return .none
+                _ = environment.syncClient.entityEventAcknowledgement(response.entityEvents.batchID)
+                    .receive(on: environment.mainQueue)
 
             case let .entityEventNotification(response):
                 response.entityEvents.entityEvents.forEach { entityEvent in
@@ -99,7 +100,8 @@ let syncV2Reducer = Reducer<SyncV2State, SyncV2Action, SyncV2Environment> { stat
                         break
                     }
                 }
-                return .none
+                _ = environment.syncClient.entityEventAcknowledgement(response.entityEvents.batchID)
+                    .receive(on: environment.mainQueue)
 
             case let .actionResponse(response):
                 response.entityEvents.entityEvents.forEach { entityEvent in
@@ -137,11 +139,11 @@ let syncV2Reducer = Reducer<SyncV2State, SyncV2Action, SyncV2Environment> { stat
                 }
                 _ = environment.syncClient.entityEventAcknowledgement(response.entityEvents.batchID)
                     .receive(on: environment.mainQueue)
-                return .none
 
             default:
                 return .none
             }
+            return .none
 
         case let .syncResult(.failure(error)):
             state.syncError = "ERROR: \(error)"
